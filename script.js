@@ -5,7 +5,7 @@ let Application = PIXI.Application,
 
 
 const app = new Application({
-	width: 800,
+	width: 768,
 	height: 600,
 	resolution: window.devicePixelRatio,
 	autoDensity: true
@@ -14,13 +14,20 @@ const app = new Application({
 const tileSize = 16;
 
 let map = {
-	width: 4,
-	height: 4,
-	tiles: [ 0,0,0,0,
-			 0,0,0,0,
-			 0,0,0,0,
-			 0,0,0,0]
+	width: 12,
+	height: 8,
+	tiles: [ 
+			12,12,12,12,12,12,12,12,12,12,12,12,
+			12,12,12,12,12,12,12,12,12,12,12,12,
+			12,12,12,12,12,12,12,12,12,12,12,12,
+			12,12,12,12,12,12,12,12,12,12,12,12,
+			12,12,12,12,12,12,12,12,12,12,12,12,
+			12,12,12,12,12,12,12,12,12,12,12,12,
+			12,12,12,12,12,12,12,12,12,12,12,12,
+			0,1,1,1,1,1,1,1,1,1,1,2]
 }
+
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 
 document.body.appendChild(app.view);
@@ -63,6 +70,7 @@ function handleLoadComplete() {
 			background.addChild(sprite);
 		}
 	}
-
+	background.scale.x = 4;
+	background.scale.y = 4;
 	app.stage.addChild(background);
 }
