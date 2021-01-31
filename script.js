@@ -20,18 +20,27 @@ let map = {
 			12,12,12,12,12,12,12,12,12,12,12,12,
 			12,12,12,12,12,12,12,12,12,12,12,12,
 			12,12,12,12,12,12,12,12,12,12,12,12,
+			3,4,4,5,12,12,12,12,3,4,4,5,
 			12,12,12,12,12,12,12,12,12,12,12,12,
-			12,12,12,12,12,12,12,12,12,12,12,12,
-			12,12,12,12,12,12,12,12,12,12,12,12,
-			12,12,12,12,12,12,12,12,12,12,12,12,
-			0,1,1,1,1,1,1,1,1,1,1,2]
+			12,12,45,12,12,12,12,12,12,48,12,12,
+			0,1,1,1,1,1,1,1,1,1,1,2,
+			14,15,15,15,15,15,15,15,15,15,15,16
+			],
+	collision: [
+			0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,
+			1,1,1,1,0,0,0,0,1,1,1,1,
+			0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,
+			1,1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,1															
+	]
 }
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-
 document.body.appendChild(app.view);
-
 
 
 // load PIXI assets
@@ -59,6 +68,8 @@ function handleLoadComplete() {
 
 	const img = new Sprite(tileTextures[55]);
 
+	let sky = new PIXI.TilingSprite(tileTextures[74], map.width * tileSize, map.height * tileSize)
+
 	// build background map from map object
 	let background = new Container();
 	for (let y = 0; y < map.height; y++) {
@@ -70,7 +81,10 @@ function handleLoadComplete() {
 			background.addChild(sprite);
 		}
 	}
+	sky.scale.x = 4;
+	sky.scale.y = 4;
 	background.scale.x = 4;
 	background.scale.y = 4;
+	app.stage.addChild(sky);
 	app.stage.addChild(background);
 }
