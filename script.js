@@ -1,6 +1,8 @@
 // PIXI.js aliases
 let Application = PIXI.Application,
 	Container = PIXI.Container,
+	Rectangle = PIXI.Rectangle,
+	Texture = PIXI.Texture,
 	Sprite = PIXI.Sprite;
 
 
@@ -46,6 +48,7 @@ document.body.appendChild(app.view);
 // load PIXI assets
 let loader = PIXI.Loader.shared;  // (for PIXI v5+)
 loader.add("tileset", "nature-platformer-tileset-16x16.png")
+	  .add("playertiles", "characters.png")
 	  .on('error', handleLoadError)
   	  .load(handleLoadComplete);
 
@@ -61,12 +64,21 @@ function handleLoadComplete() {
 	for (let i = 0; i < 77; i++) {
 		let x = i % 7;
 		let y = Math.floor(i / 7);
-		tileTextures[i] = new PIXI.Texture(
+		tileTextures[i] = new Texture(
 			loader.resources.tileset.texture,
-			new PIXI.Rectangle(x * tileSize, y * tileSize, tileSize, tileSize));
+			new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize));
 	}
 
-	const img = new Sprite(tileTextures[55]);
+	let playerFrames = [];
+	for (let i = 0; i < 8; i++) {
+		playerFrames[i] = new Texture(
+			loader.resources.playertiles.texture,
+			new Rectangle(i * tileSize, 32, tileSize, 32));
+	}
+
+	const player = new Sprite(playerFrames[0]);
+	player.scale.x = 4;
+	player.scale.y = 4;
 
 	let sky = new PIXI.TilingSprite(tileTextures[74], map.width * tileSize, map.height * tileSize)
 
@@ -87,4 +99,5 @@ function handleLoadComplete() {
 	background.scale.y = 4;
 	app.stage.addChild(sky);
 	app.stage.addChild(background);
+	app.stage.addChild(player);
 }
