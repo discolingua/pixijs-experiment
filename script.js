@@ -5,7 +5,6 @@ let Application = PIXI.Application,
 	Texture = PIXI.Texture,
 	Sprite = PIXI.Sprite;
 
-
 const app = new Application({
 	width: 768,
 	height: 600,
@@ -100,4 +99,19 @@ function handleLoadComplete() {
 	app.stage.addChild(sky);
 	app.stage.addChild(background);
 	app.stage.addChild(player);
+
+	let character = {
+		x: 0, y: 0,
+		vx: 0, vy: 0
+	};
+
+	// List for frame updates
+	app.ticker.add(() => {
+		player.x = character.x;
+		player.y = character.y;
+
+		character.vy += .1; // gravity
+		character.x += character.vx;
+		character.y += character.vy;
+	});
 }
