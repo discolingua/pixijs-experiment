@@ -12,6 +12,8 @@ const app = new Application({
 	autoDensity: true
 });
 
+const GRAVITY = 0.5;
+const SCALE = 4;
 const tileSize = 16;
 
 let map = {
@@ -40,6 +42,12 @@ let map = {
 }
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
+function testCollision(worldX, worldY) {
+	let mapX = Math.floor(worldX / tileSize / SCALE);
+	let mapY = Math.floor(worldY / tileSize / SCALE);
+	return map.collision[mapY * map.width + mapX];
+}
 
 document.body.appendChild(app.view);
 
@@ -76,8 +84,8 @@ function handleLoadComplete() {
 	}
 
 	const player = new Sprite(playerFrames[0]);
-	player.scale.x = 4;
-	player.scale.y = 4;
+	player.scale.x = SCALE;
+	player.scale.y = SCALE;
 
 	let sky = new PIXI.TilingSprite(tileTextures[74], map.width * tileSize, map.height * tileSize)
 
@@ -92,10 +100,10 @@ function handleLoadComplete() {
 			background.addChild(sprite);
 		}
 	}
-	sky.scale.x = 4;
-	sky.scale.y = 4;
-	background.scale.x = 4;
-	background.scale.y = 4;
+	sky.scale.x = SCALE;
+	sky.scale.y = SCALE;
+	background.scale.x = SCALE;
+	background.scale.y = SCALE;
 	app.stage.addChild(sky);
 	app.stage.addChild(background);
 	app.stage.addChild(player);
@@ -112,6 +120,18 @@ function handleLoadComplete() {
 
 		character.vy += .1; // gravity
 		character.x += character.vx;
-		character.y += character.vy;
+		// character.y += character.vy;
+		if (character.vy > 0) {
+			for (let i = 0; i < character.vy; i++) {
+		 		let testX1 = character.x;
+				let testX2 = character.x + tileSize * SCALE - 1;
+		 		let testY = character.y + tileSize * SCALE * 2;
+		 		if (testCollision(testX1, testY)) {
+		 			character.vy = 0;
+		 			break;
+		 		}
+		 		character.y += GRAVITY;
+		 	}
+		 }
 	});
 }
